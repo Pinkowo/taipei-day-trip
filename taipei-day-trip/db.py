@@ -98,7 +98,10 @@ def select_imgs(spot_id):
     )
     try:
         with mydb.cursor() as cursor:
-            sql = "SELECT url FROM imgs WHERE spot_id = %s"
+            sql = "SELECT GROUP_CONCAT(imgs.url) \
+                FROM spots LEFT JOIN imgs \
+                ON imgs.spot_id = spots.id \
+                WHERE imgs.spot_id = %s"
             val = (spot_id,)
             cursor.execute(sql,val)
             result = cursor.fetchall()
@@ -128,7 +131,7 @@ def count_all():
         return result
 
 # 計算指定類別的數量
-def count_category(cat):
+def count_category(value):
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -137,8 +140,9 @@ def count_category(cat):
     )
     try:
         with mydb.cursor() as cursor:
-            sql = "SELECT COUNT(*) FROM spots WHERE category = %s"
-            val = (cat,)
+            sql = "SELECT COUNT(*) FROM spots \
+                WHERE (category = %s) OR (name LIKE %s)"
+            val = (value,"%"+value+"%")
             cursor.execute(sql,val)
             result = cursor.fetchone()
     except:

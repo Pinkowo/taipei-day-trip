@@ -59,12 +59,12 @@ mydb.close()
 
 ### 確認資料 ###
 # with mydb.cursor() as cursor:
-#     sql = '''SELECT category FROM spots'''
+#     sql = '''SELECT url FROM imgs WHERE spot_id = 1'''
 #     cursor.execute(sql)
 #     data = cursor.fetchall()
 #     print(data)
  
-# mydb.close()
+mydb.close()
    
 
 ### 比對原 json 檔跟新 json 檔的變數名稱 ###        
