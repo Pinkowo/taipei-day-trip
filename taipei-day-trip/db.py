@@ -12,7 +12,7 @@ def select_all_attri(attri):
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Bet@7878",
+        password="pw",
         database="trip"
     )
     try:
@@ -31,7 +31,7 @@ def select_search(value,limit,offset):
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Bet@7878",
+        password="pw",
         database="trip"
     )
     try:
@@ -53,7 +53,7 @@ def select_id(id):
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Bet@7878",
+        password="pw",
         database="trip"
     )
     try:
@@ -73,7 +73,7 @@ def select_limit(num,offset):
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Bet@7878",
+        password="pw",
         database="trip"
     )
     try:
@@ -93,7 +93,7 @@ def select_imgs(spot_id):
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Bet@7878",
+        password="pw",
         database="trip"
     )
     try:
@@ -116,7 +116,7 @@ def count_all():
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Bet@7878",
+        password="pw",
         database="trip"
     )
     try:
@@ -135,7 +135,7 @@ def count_category(value):
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Bet@7878",
+        password="pw",
         database="trip"
     )
     try:

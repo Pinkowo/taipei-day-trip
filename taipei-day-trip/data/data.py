@@ -1,10 +1,11 @@
 import json
 import mysql.connector
+import db
 
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
-  password="",
+  password="pw",
   database="trip"
 )
 

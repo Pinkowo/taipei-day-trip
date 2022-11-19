@@ -33,4 +33,4 @@ app.register_blueprint(atts_blueprints)
 app.register_blueprint(att_blueprints)
 app.register_blueprint(cat_blueprints)
 
-app.run(host="0.0.0.0",port=3000,debug=True)
+app.run(host="0.0.0.0",port=3000)
