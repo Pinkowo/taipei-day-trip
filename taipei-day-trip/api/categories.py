@@ -8,10 +8,9 @@ cat_blueprints = Blueprint( 'cat', __name__ )
 @cat_blueprints.route('/api/categories', methods=['GET'])
 def Categories():
     try:
-        result = db.select_all_attri("category")
-        results = list(set(db.merge(result)))
+        result = db.select_cat()
         data = {
-            "data": results
+            "data": result[0]
         }
         res = make_response(jsonify(data),200)
     except:

@@ -16,23 +16,13 @@ def Attractions():
             raise ValueError("頁碼最小值為 0")
         # 沒有輸入關鍵字
         if keyword == None: 
-            count = db.count_all()
-            result = db.select_limit(12,int(page)*12)
+            result = db.select_limit(13,int(page)*12)
         # 有輸入關鍵字
         else:
-            count = db.count_category(keyword)
-            result = db.select_search(keyword,12,int(page)*12)
-        # 計算最後一頁
-        endPage = int(count[0] / 12)
-        if int(page) >= endPage:
-            nextPage = None
-        else:
-            nextPage = int(page)+1
+            result = db.select_search(keyword,13,int(page)*12)
         # 把12筆資料放入data
         results = []
-        for xid, x in enumerate(result):
-            img = db.select_imgs(xid+1)
-            imgs = img[0][0].split(',')
+        for x in result:
             resultDict = {
                 "id": x[0],
                 "name": x[1],
@@ -43,9 +33,15 @@ def Attractions():
                 "mrt": x[6],
                 "lat": x[7],
                 "lng": x[8],
-                "images": imgs
+                "images": x[9].split(',')
             }
             results.append(resultDict)
+        # 判斷最後一頁
+        if len(result) < 13:
+            nextPage = None
+        else:
+            nextPage = int(page)+1
+            del results[-1]
         data = {
                 "nextPage": nextPage,
                 "data": results

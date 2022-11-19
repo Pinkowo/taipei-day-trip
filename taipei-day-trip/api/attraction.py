@@ -8,20 +8,9 @@ att_blueprints = Blueprint( 'att', __name__ )
 @att_blueprints.route('/api/attraction/<int:attractionId>', methods=['GET'])
 def AttractionId(attractionId):
     try:
-        # 找出景點編號的極限值
-        spotId = db.select_all_attri("id")
-        limit = db.merge(spotId)
-        maxId = max(limit)
-        minId = min(limit)
-        # 判斷景點編號
-        if attractionId > maxId:
-            raise ValueError("景點編號過大，請重新嘗試")
-        if attractionId < minId:
-            raise ValueError("景點編號過小，請重新嘗試")
-        # 景點編號在正確範圍內，取出資料放進json
         result = db.select_id(attractionId)
-        img = db.select_imgs(attractionId)
-        imgs = img[0][0].split(',')
+        if result[0] == None:
+            raise ValueError("無此景點編號，請重新嘗試")
         data = {
             "data": {
                 "id": result[0],
@@ -33,7 +22,7 @@ def AttractionId(attractionId):
                 "mrt": result[6],
                 "lat": result[7],
                 "lng": result[8],
-                "images": imgs    
+                "images": result[9].split(',')
             }
         }
         res = make_response(jsonify(data),200)

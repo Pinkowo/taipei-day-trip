@@ -1,6 +1,5 @@
 import json
 import mysql.connector
-import db
 
 mydb = mysql.connector.connect(
   host="localhost",
@@ -58,14 +57,15 @@ with mydb.cursor() as cursor:
 mydb.close()
 
 
-### 確認資料 ###
+### debug專區 ###
 # with mydb.cursor() as cursor:
-#     sql = '''SELECT url FROM imgs WHERE spot_id = 1'''
-#     cursor.execute(sql)
-#     data = cursor.fetchall()
-#     print(data)
- 
-mydb.close()
+#     sql = "SELECT spots.*, GROUP_CONCAT(imgs.url) \
+#     FROM spots LEFT JOIN imgs \
+#     ON imgs.spot_id = spots.id WHERE spot_id = 99;"
+#     cursor.execute(sql,)
+#     result = cursor.fetchall()
+# print(result)
+# mydb.close()
    
 
 ### 比對原 json 檔跟新 json 檔的變數名稱 ###        
