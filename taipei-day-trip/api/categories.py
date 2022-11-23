@@ -10,7 +10,7 @@ def Categories():
     try:
         result = db.select_cat()
         data = {
-            "data": result[0]
+            "data": result[0][0].split(',')
         }
         res = make_response(jsonify(data),200)
     except:
