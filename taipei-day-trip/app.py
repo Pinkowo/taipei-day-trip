@@ -1,7 +1,5 @@
 from flask import *
 from flask_restful import Api
-from api.categories import *
-from api.attraction import *
 from api.attractions import *
 
 app=Flask(
@@ -9,6 +7,7 @@ app=Flask(
     static_folder="static",
     static_url_path="/static" 
 )
+app.register_blueprint(atts_blueprints, url_prefix='/api')
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.config['JSON_SORT_KEYS'] = False
@@ -28,9 +27,5 @@ def booking():
 def thankyou():
 	return render_template("thankyou.html")
 
-# APIs
-app.register_blueprint(atts_blueprints)
-app.register_blueprint(att_blueprints)
-app.register_blueprint(cat_blueprints)
 
 app.run(host="0.0.0.0",port=3000,debug=True)

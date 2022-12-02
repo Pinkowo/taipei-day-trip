@@ -54,7 +54,7 @@ function printImg(images){
 let rightBox = document.getElementById("right-box");
 function printForm(name, cat, mrt){
   let content = `
-    <h3 class="fz-24 fw-700">${name}</h3>
+    <h3 class="fz-24 fw-700" style="text-align: left;">${name}</h3>
     <div class="intro">${cat} at ${mrt}</div>
   `
   rightBox.insertAdjacentHTML('afterbegin',content);
