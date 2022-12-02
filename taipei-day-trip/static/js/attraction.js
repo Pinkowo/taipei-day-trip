@@ -4,7 +4,7 @@ let slideIndex = 1;
 let slides = [];
 let dots = [];
 
-const getMoreData =() => {
+const getData =() => {
   let url = "/api/attraction/"+id;
   fetch(url)
       .then(function(response){
@@ -13,7 +13,6 @@ const getMoreData =() => {
       .then(function(data){
         printHtml(data.data);
         if(data.data.images.length != 1){
-          console.log(data.data.images);
           printSlides(data.data.images.length);
           showSlides(slideIndex);
         }
@@ -22,7 +21,7 @@ const getMoreData =() => {
           console.log(error);
       });
 }
-window.addEventListener("load", getMoreData, false);
+window.addEventListener("load", getData, false);
 
 // html
 let slideBox = document.getElementById("box-content");

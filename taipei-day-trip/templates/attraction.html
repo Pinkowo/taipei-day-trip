@@ -1,22 +1,8 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/css/attraction.css">
-    <title>台北一日遊</title>
-  </head>
-  <body>
-    <nav>
-      <div class="nav">
-        <h2 class="fz-30 color-blue">台北一日遊</h2>
-        <div>
-          <a class="nav-btn color-gray fz-16 fw-500" href="">預定行程</a>
-          <a class="nav-btn color-gray fz-16 fw-500" href="">登入/註冊</a>
-        </div>
-      </div>
-    </nav>
+{% extends "base.html" %}  
+
+{% block css %}<link rel="stylesheet" href="/static/css/attraction.css">{% endblock %}
+
+{% block body %}
 
     <section>
       <div class="top-box">
@@ -56,10 +42,6 @@
       
     </section>
 
-    <footer>
-      COPYRIGHT © 2021 台北一日遊
-    </footer>
+{% endblock %}
 
-    <script src="/static/js/attraction.js"></script>
-  </body>
-</html>
+{% block js %}<script src="/static/js/attraction.js"></script>{% endblock %}
