@@ -98,11 +98,18 @@ section{
     margin: auto;
     padding: 0;
 }
-.slides {
-    animation: lightBoxAni 1s ease;
+.slides{
+    height: 406px;
 }
 .slides img{
-    height: 406px;
+    width: 100%;
+    height: 100%;
+    object-fit:cover;
+    animation: lightBoxAni 1s ease;
+}
+@keyframes lightBoxAni {
+    0% {opacity: 0.5;}
+    100% {opacity: 1;}
 }
 .prev, .next {
     cursor: pointer;
@@ -124,10 +131,6 @@ section{
 .prev:hover,
 .next:hover {
     opacity: 1;
-}
-@keyframes lightBoxAni {
-    0% {opacity: 0.5;}
-    100% {opacity: 1;}
 }
 .dots{
     position: absolute;
@@ -291,34 +294,21 @@ form button{
     .light-box{
         height: auto;
     }
-    .slides img{
-        width: 100%;
-        object-fit: cover;
-    }
 }
 @media screen and (max-width:900px){
     .top-box{
-        flex-direction: column;
+        flex-direction: column;       
     }
     #right-box{
         width: 90%;
         margin-top: 37px;
     }
     .light-box{
-        width: 90%;
-        margin-right: 0;
+        width: 100%;
+        margin: 0;
     }
-    .slides img{
-        height: 100%;
-    }
-}
-@media screen and (max-width:600px){
     section{
         margin-top: 0;
-    }
-    .light-box{
-        width: 100%;
-        height: auto;
     }
 }
 @media screen and (max-width:380px){
@@ -340,6 +330,9 @@ form button{
     }
     section{
         margin-bottom: 134px;
+    }
+    .slides{
+        height: auto;
     }
     .slides img{
         height: 350px;
