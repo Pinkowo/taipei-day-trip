@@ -5,7 +5,7 @@ def select_cat():
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="pw",
+        password="Bet@7878",
         database="trip"
     )
     try:
@@ -24,16 +24,16 @@ def select_search(value,limit,offset):
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="pw",
+        password="Bet@7878",
         database="trip"
     )
     try:
         with mydb.cursor() as cursor:
+            cursor.execute("SET SESSION group_concat_max_len = 10240;")
             sql = "SELECT spots.*, GROUP_CONCAT(imgs.url)\
-                FROM spots LEFT JOIN imgs \
-                ON imgs.spot_id = spots.id \
-                WHERE (category = %s) OR (name LIKE %s)\
-                GROUP BY imgs.spot_id LIMIT %s OFFSET %s"
+                FROM spots LEFT JOIN imgs ON imgs.spot_id = spots.id \
+                WHERE category = %s OR name LIKE %s \
+                GROUP BY spots.id LIMIT %s OFFSET %s"
             val = (value,"%"+value+"%",limit,offset)
             cursor.execute(sql,val)
             result = cursor.fetchall()
@@ -48,11 +48,12 @@ def select_limit(num,offset):
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="pw",
+        password="Bet@7878",
         database="trip"
     )
     try:
         with mydb.cursor() as cursor:
+            cursor.execute("SET SESSION group_concat_max_len = 10240;")
             sql = "SELECT spots.*, GROUP_CONCAT(imgs.url)\
                 FROM spots LEFT JOIN imgs ON imgs.spot_id = spots.id \
                 WHERE spots.id = imgs.spot_id \
@@ -71,11 +72,12 @@ def select_id(id):
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="pw",
+        password="Bet@7878",
         database="trip"
     )
     try:
         with mydb.cursor() as cursor:
+            cursor.execute("SET SESSION group_concat_max_len = 10240;")
             sql = "SELECT spots.*, GROUP_CONCAT(imgs.url) \
             FROM spots LEFT JOIN imgs \
             ON imgs.spot_id = spots.id WHERE spot_id = %s;"
