@@ -1,3 +1,5 @@
+let isLoading = false;
+
 // 輸入框與景點列表
 let searchList = document.getElementById("search-list");
 let searchInput = document.getElementById("search-input");
@@ -53,13 +55,16 @@ searchBtn.addEventListener('click',function(){
     nextPage = 0;
     observer.unobserve(target);
     gridBox.innerHTML = '';
-    debounceGet();
+    if(!isLoading){
+        isLoading = true;
+        getMoreData();
+    }
     observer.observe(target);
 });
 
 // fetch 載入頁面
 const getMoreData =() => {
-    url = "/api/attractions?page="+nextPage;
+    let url = "/api/attractions?page="+nextPage;
     if(keyword != ''){
         url = "/api/attractions?page="+nextPage+"&keyword="+keyword;
     }
@@ -86,6 +91,7 @@ const getMoreData =() => {
                     printCard(data.data,i);
                 }
             }
+            isLoading = false;
         })
         .catch(function(error){
             console.log(error);
@@ -99,16 +105,18 @@ function printCard(data, i){
     }
     let content = `
         <div class="pre-card">
-            <figure>
-                <img src=${data[i].images[0]} alt="">
-                <figcaption>
-                    ${data[i].name}
-                </figcaption>
-            </figure>
-            <div class="pre-intro">
-                <div>${data[i].mrt}</div>
-                <div>${data[i].category}</div>
-            </div>
+            <a class="clear" href="/attraction/${data[i].id}">
+                <figure>
+                    <img src=${data[i].images[0]} alt="">
+                    <figcaption>
+                        ${data[i].name}
+                    </figcaption>
+                </figure>
+                <div class="pre-intro">
+                    <div>${data[i].mrt}</div>
+                    <div>${data[i].category}</div>
+                </div>
+            </a>
         </div>
         `
     gridBox.insertAdjacentHTML('beforeend',content);
@@ -122,22 +130,12 @@ const options = {
 };
 function callback(entries, observer){
     if(entries[0].intersectionRatio == 1){
-        debounceGet();
+        if(!isLoading){
+            isLoading = true;
+            getMoreData();
+        }
     }
 }
 const observer = new IntersectionObserver(callback, options);
 const target = document.querySelector('#footer');
 observer.observe(target);
-
-// 防抖
-function debounce(fun, delay) {
-    return function (args) {
-        let that = this;
-        let _args = args;
-        clearTimeout(fun.time);
-        fun.time = setTimeout(function () {
-            fun.call(that, _args);
-        }, delay);
-    }
-}
-let debounceGet = debounce(getMoreData, 500);

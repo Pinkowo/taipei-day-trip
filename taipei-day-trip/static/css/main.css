@@ -123,7 +123,6 @@ h1 +p{
     cursor: pointer;
 }
 .hide{
-    /* visibility: hidden; */
     display: none;
 }
 /* footer */
@@ -136,7 +135,6 @@ footer{
     color:white;
     font-size: 16px;
     line-height: 83%;
-
 }
 /* section */
 section{
@@ -200,6 +198,9 @@ figcaption{
     color:#757575;
     font-size: 20px;
     grid-area: 2 / 2 / 1 / 4;
+}
+.clear{
+    text-decoration:none;
 }
 
 @media screen and (max-width:1200px){

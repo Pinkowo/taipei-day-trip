@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/attraction.css">
+    <title>台北一日遊</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav">
+        <h2 class="fz-30 color-blue">台北一日遊</h2>
+        <div>
+          <a class="nav-btn color-gray fz-16 fw-500" href="">預定行程</a>
+          <a class="nav-btn color-gray fz-16 fw-500" href="">登入/註冊</a>
+        </div>
+      </div>
+    </nav>
+
+    <section>
+      <div class="top-box">
+        <div class="light-box">
+          <div id="box-content">       
+          </div>
+        </div>
+
+        <div id="right-box" class="color-gray fz-16 fw-500">
+          <form class="fz-16">
+            <div class="fw-700">訂購導覽行程</div>
+            <div class="intro-trip">以此景點為中心的一日行程，帶您探索城市角落故事</div>
+            <div class="date">
+              <span class="fw-700">選擇日期：</span>
+              <input type="date" id="tripDate" max="2023-12-31">
+            </div>
+            <div class="time">
+              <span class="fw-700">選擇時間：</span>
+              <span>
+                <input type="radio" name="time" value="morning" onclick="changePrice(2000)">
+                <label for="morning">上半天</label><br>
+                <input type="radio" name="time" value="afternoon" onclick="changePrice(2500)">
+                <label for="afternoon">下半天</label>
+              </span>
+            </div>
+            <div>
+              <span class="fw-700">導覽費用：</span>
+              <span id="price">新台幣 2000 元</span>
+            </div>
+            <button>開始預約行程</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="bottom" class="fz-16 fw-400 color-gray">
+      </div>
+      
+    </section>
+
+    <footer>
+      COPYRIGHT © 2021 台北一日遊
+    </footer>
+
+    <script src="/static/js/attraction.js"></script>
+  </body>
+</html>
