@@ -102,22 +102,21 @@ section{
 #right-box{
     width: 600px;
 }
-h3{
+#right-box h3{
     margin: 0;
-    height: 33px;
 }
 .intro{
     height: 22px;
     margin-top: 15px;
     margin-bottom: 20px;
 }
-form{
+#right-form{
     background-color: #E8E8E8;
-    padding: 10px 20px;
+    padding: 15px 20px;
     border-radius: 5px;
     height: 282px;
 }
-form div{
+#right-form div{
     height: 22px;
     margin-bottom: 15px;
     margin-right: 5px;
@@ -142,6 +141,7 @@ form div{
 }
 .time{
     display: flex;
+    margin-top: 24px;
 }
 .time span{
     display: flex;
@@ -178,7 +178,7 @@ label{
     margin-right: 18px;
     margin-left: 9px;
 }
-form button{
+#right-form button{
     background-color: #448899;
     border: 0;
     border-radius: 5px;

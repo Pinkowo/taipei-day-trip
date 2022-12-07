@@ -14,34 +14,55 @@
         <div id="modal-signin" class="modal-box">
           <div class="modal-bar"></div>
           <img class="modal-cross" src="../static/images/icon/icon_close.svg" alt="">
-          <h3>登入會員帳號</h3>
-          <form action="">
-            <input class="modal-input" type="text" placeholder="輸入電子信箱">
-            <input class="modal-input" type="password" name="password" placeholder="輸入密碼" autocomplete="on">
-            <input class="modal-button" type="button" value="登入帳戶">
+          <h3 class="modal-title">登入會員帳號</h3>
+
+          <form id="form-signin">
+            <input class="modal-input" type="email" name="email" 
+              placeholder="輸入電子信箱" required="required"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+
+            <input class="modal-input" type="password" name="password" 
+              placeholder="輸入密碼" autocomplete="on" required="required">
+
+            <input class="modal-button" type="submit" value="登入帳戶">
           </form>
-          <a class="modal-switch" href="#" onclick="switchModal(0);">還沒有帳戶？點此註冊</a>
+          <div id="hint-signin" class="hint"></div>
+
+          <button class="modal-switch" onclick="switchModal(0);">還沒有帳戶？點此註冊</button>
         </div>
-        <div id="modal-signup" class="modal-box">
+        
+        <div id="modal-signup" class="modal-box" style="display:none;">
           <div class="modal-bar"></div>
           <img class="modal-cross" src="../static/images/icon/icon_close.svg" alt="">
-          <h3>註冊會員帳號</h3>
-          <form action="">
-            <input class="modal-input" type="text" placeholder="輸入姓名">
-            <input class="modal-input" type="text" placeholder="輸入電子信箱">
-            <input class="modal-input" type="password" name="password" placeholder="輸入密碼" autocomplete="on">
-            <input class="modal-button" type="button" value="註冊新帳戶">
+          <h3 class="modal-title">註冊會員帳號</h3>
+
+          <form id="form-signup">
+            <input class="modal-input" type="text" name="name" 
+              placeholder="輸入姓名" required="required">
+
+            <input class="modal-input" type="email" name="email" 
+              placeholder="輸入電子信箱" required="required"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+
+            <input class="modal-input" type="password" name="password" 
+              placeholder="輸入密碼" autocomplete="on" required="required">
+
+            <input class="modal-button" type="submit" value="註冊新帳戶">
           </form>
-          <a class="modal-switch" href="#" onclick="switchModal(1);">已經有帳戶了？點此登入</a>
+          <div id="hint-signup" class="hint"></div>
+
+          <button class="modal-switch" onclick="switchModal(1);">已經有帳戶了？點此登入</button>
         </div>
         <div id="modal-mask"></div>
     </div>
+
     <nav>
       <div class="nav">
         <a href="/" style="text-decoration:none;"><h2>台北一日遊</h2></a>
         <div>
           <a class="nav-btn" href="#">預定行程</a>
           <a class="nav-btn" href="#" onclick="openModal()">登入/註冊</a>
+          <a class="nav-btn" href="#" onclick="logOut()" style="display:none;">登出</a>
         </div>
       </div>
     </nav>

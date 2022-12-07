@@ -120,12 +120,12 @@ footer{
     right: 17px;
     cursor: pointer;
 }
-h3{
+.modal-title{
     font-size: 27px;
     color: #666666;
     text-align: center;
     width: 310px;
-    height: 24px;
+    height: 27px;
     line-height: 100%;
     margin: 15px;
 }
@@ -151,16 +151,31 @@ h3{
     font-size: 19px;
     line-height: 16px;
     color: #FFFFFF;
-    margin: 0 15px 10px 15px;
+    margin: 0 15px 5px 15px;
+    cursor: pointer;
+}
+.modal-button:active{
+    background: #347180;
+}
+.hint{
+    font-size: 14px;
+    color:red;
+    font-weight: 400;
 }
 .modal-switch{
-    width: 310px;
+    width: 340px;
     height: 22px;
     text-align: center;
     font-weight: 500;
     font-size: 16px;
     color: #666666;
     text-decoration:none;
+    margin: 5px 0 15px 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background-color: #fff;
+    cursor: pointer;
 }
 .modal-switch:hover{
     text-decoration:underline;
@@ -175,8 +190,6 @@ h3{
     transform: translate(-50%, 0);
     box-shadow: 0px 4px 60px #AAAAAA;
     width: 340px;
-    height: 275px;
-    visibility: hidden;
 }
 #modal-signup{
     border-radius: 6px;
@@ -188,5 +201,4 @@ h3{
     transform: translate(-50%, 0);
     box-shadow: 0px 4px 60px #AAAAAA;
     width: 340px;
-    height: 332px;
 }
