@@ -167,6 +167,7 @@ footer{
     font-size: 14px;
     color:red;
     font-weight: 400;
+    text-align:center;
 }
 .modal-switch{
     width: 176px;
