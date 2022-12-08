@@ -1,7 +1,7 @@
 from flask import *
 import sys
 sys.path.append("..") 
-import db
+import data.db as db
 
 atts_blueprints = Blueprint( 'atts', __name__ )
 

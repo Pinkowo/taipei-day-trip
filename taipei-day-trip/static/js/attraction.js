@@ -1,5 +1,5 @@
 // fetch 載入頁面
-let id = location.href.split("attraction/")[1];
+const id = location.href.split("attraction/")[1];
 let slideIndex = 1;
 let slides = [];
 let dots = [];
@@ -11,6 +11,7 @@ const getData =() => {
           return response.json();
       })
       .then(function(data){
+        document.title = data.data.name;
         printHtml(data.data);
         if(data.data.images.length != 1){
           printSlides(data.data.images.length);
@@ -24,7 +25,7 @@ const getData =() => {
 window.addEventListener("load", getData, false);
 
 // html
-let slideBox = document.getElementById("box-content");
+const slideBox = document.getElementById("box-content");
 
 function printHtml(data){
   if(data.mrt == null){
@@ -37,11 +38,11 @@ function printHtml(data){
 
 // print top-box (img)
 function printImg(images){
-  let slideDiv = document.createElement("div");
+  const slideDiv = document.createElement("div");
   slideDiv.className = "slides";
 
   for(let i=0;i<images.length;i++){
-    let slideImg = document.createElement("img");
+    const slideImg = document.createElement("img");
     slideImg.src = images[i];
     slides.push(slideImg);
     slideDiv.appendChild(slideImg);
@@ -51,7 +52,7 @@ function printImg(images){
 }
 
 // print right-box
-let rightBox = document.getElementById("right-box");
+const rightBox = document.getElementById("right-box");
 function printForm(name, cat, mrt){
   let content = `
     <h3 class="fz-24 fw-700" style="text-align: left;">${name}</h3>
@@ -61,7 +62,7 @@ function printForm(name, cat, mrt){
 }
 
 // print bottom
-let bottom = document.getElementById("bottom");
+const bottom = document.getElementById("bottom");
 function printBottom(description, address, transport){
   let content = `
     <div>
@@ -83,18 +84,18 @@ function printBottom(description, address, transport){
 function printSlides(n){
   let arrow = `
     <a class="prev" onclick="plusSlides(-1)">
-      <img src="/static/images/icon/btn_leftArrow.png" alt="prev">
+      <img src="/static/images/icon/btn_leftArrow.svg" alt="prev">
     </a>
     <a class="next" onclick="plusSlides(1)">
-      <img src="/static/images/icon/btn_rightArrow.png" alt="next">
+      <img src="/static/images/icon/btn_rightArrow.svg" alt="next">
     </a>
   `
   slideBox.insertAdjacentHTML('beforeend',arrow);
 
-  let dotDiv = document.createElement("div");
+ const dotDiv = document.createElement("div");
   dotDiv.className = "dots";
   for(let i=0;i<n;i++){
-    let dotBtn = document.createElement("button");
+    const dotBtn = document.createElement("button");
     dotBtn.className = "dotBtn";
     dotBtn.onclick = function(){currentSlide(i)};
     dots.push(dotBtn);
@@ -134,5 +135,5 @@ function changePrice(price){
 }
 
 // datepicker 的 min 設置
-let date = document.getElementById("tripDate");
+const date = document.getElementById("tripDate");
 date.min = new Date().toISOString().split("T")[0];

@@ -2,12 +2,21 @@
 // 開啟關閉
 const modal = document.getElementById("modal");
 const modalCross = document.getElementsByClassName("modal-cross");
+const signInModal = document.getElementById("modal-signin");
+const signUpModal = document.getElementById("modal-signup");
+const scrollBarWidth = window.innerWidth - document.body.clientWidth;
 
 function openModal(){
     modal.style.display = "block";
+    // 隱藏滾動條
+    document.body.style.overflow = "hidden";
+    document.body.style.marginRight = scrollBarWidth + "px";
 }
 function closeModal(){
     modal.style.display = "none";
+    // 開啟滾動條
+    document.body.style.overflow = "auto";
+    document.body.style.marginRight = 0;
 }
 
 window.addEventListener('click', function (e) {
@@ -21,9 +30,6 @@ window.addEventListener('click', function (e) {
 }, true);
 
 // 切換
-const signInModal = document.getElementById("modal-signin");
-const signUpModal = document.getElementById("modal-signup");
-
 function switchModal(status = 0){
     switch (status){
         case 0:
@@ -42,11 +48,11 @@ function switchModal(status = 0){
 // 文字提示 0=signUpHint 1=signInHint
 const signUpHint = document.getElementById("hint-signup");
 const signInHint = document.getElementById("hint-signin");
-formArray = [signUpHint,signInHint];
+formHint = [signUpHint,signInHint];
 
 function hint(form, msg, color="red"){
-    formArray[form].style.color = color;
-    formArray[form].innerHTML = msg;
+    formHint[form].style.color = color;
+    formHint[form].innerHTML = msg;
 }
 
 // 註冊
@@ -126,7 +132,7 @@ function logOut(){
         if(data.ok){
             btns[1].style.display = "inline-block";
             btns[2].style.display = "none";
-            resetForm();
+            location.reload(true);
         }
         else if(data.error){
             print(data.error);
@@ -137,14 +143,7 @@ function logOut(){
     });
 }
 
-function resetForm(){
-    formArray[0].innerHTML = '';
-    formArray[1].innerHTML = '';
-    signUpForm.reset();
-    signInForm.reset();
-}
-
-// 檢查會員登入狀態
+// 每次開啟頁面時檢查會員登入狀態
 fetch("/api/user/auth",{method: 'GET'})
     .then((response) => response.json())
     .then((data) => {

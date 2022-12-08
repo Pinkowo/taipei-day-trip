@@ -3,11 +3,12 @@ from flask_bcrypt import Bcrypt
 import jwt
 import sys
 sys.path.append("..") 
-import db
+import data.db as db
+from config import PR_KEY
 
 user_blueprints = Blueprint( 'user', __name__ )
 bcrypt = Bcrypt()
-private_key = "secretinjapaneseishimitsu"
+private_key = PR_KEY
 
 # 註冊一個新的會員
 @user_blueprints.route('/user', methods=['POST'])
@@ -42,25 +43,6 @@ def SignUp():
     finally:
         return res
 
-# 取得當前登入的會員資訊
-# @user_blueprints.route('/user/auth', methods=['GET'])
-# def Info():
-#     global private_key
-#     try:
-#         token = request.cookies.get('token')
-#         decoded_token = jwt.decode(token, private_key, algorithms="HS256")
-#         data = {
-#             "data": decoded_token
-#         }
-#         res = make_response(jsonify(data),200)
-#     except:
-#         data = {
-#             "error": True,
-#             "message": "伺服器內部錯誤"
-#         }
-#         res = make_response(jsonify(data),500)
-#     finally:
-#         return res
     
 # GET 取得當前登入的會員資訊
 # PUT 登入 / DELETE 登出會員帳戶

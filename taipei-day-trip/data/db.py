@@ -1,14 +1,19 @@
 import mysql.connector
+from config import DB_PW
+
+def db_connect():
+    mydb = mysql.connector.connect(
+        host = "localhost",
+        user="root",
+        password=DB_PW,
+        database="trip"
+    )
+    return mydb
 
 ### attractions ###
 # 給出景點表中所有景點的指定屬性 (id、name...etc)
 def select_cat():
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Bet@7878",
-        database="trip"
-    )
+    mydb = db_connect()
     try:
         with mydb.cursor() as cursor:
             sql = "SELECT GROUP_CONCAT(DISTINCT category) FROM spots"
@@ -22,12 +27,7 @@ def select_cat():
 
 # 關鍵字搜尋
 def select_search(value,limit,offset):
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Bet@7878",
-        database="trip"
-    )
+    mydb = db_connect()
     try:
         with mydb.cursor() as cursor:
             cursor.execute("SET SESSION group_concat_max_len = 10240;")
@@ -46,12 +46,7 @@ def select_search(value,limit,offset):
     
 # 限定筆數搜尋
 def select_limit(num,offset):
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Bet@7878",
-        database="trip"
-    )
+    mydb = db_connect()
     try:
         with mydb.cursor() as cursor:
             cursor.execute("SET SESSION group_concat_max_len = 10240")
@@ -70,12 +65,7 @@ def select_limit(num,offset):
     
 # 查找指定 id
 def select_id(id):
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Bet@7878",
-        database="trip"
-    )
+    mydb = db_connect()
     try:
         with mydb.cursor() as cursor:
             cursor.execute("SET SESSION group_concat_max_len = 10240")
@@ -97,12 +87,7 @@ def select_id(id):
 lastId = 1
 def insert_user(name,email,password):
     global lastId
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Bet@7878",
-        database="trip"
-    )
+    mydb = db_connect()
     try:
         with mydb.cursor() as cursor:
             sql = "INSERT IGNORE INTO user \
@@ -125,12 +110,7 @@ def insert_user(name,email,password):
     
 # 驗證會員 email 及 password
 def select_user(email):
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Bet@7878",
-        database="trip"
-    )
+    mydb = db_connect()
     try:
         with mydb.cursor() as cursor:
             sql = "SELECT * FROM user \
