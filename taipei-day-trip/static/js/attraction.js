@@ -11,11 +11,17 @@ const getData =() => {
           return response.json();
       })
       .then(function(data){
-        document.title = data.data.name;
-        printHtml(data.data);
-        if(data.data.images.length != 1){
-          printSlides(data.data.images.length);
-          showSlides(slideIndex);
+        const section = document.querySelector("section");
+        if(data.error){
+          section.innerHTML = "請重新輸入編號";
+          section.classList.add("section-empty");
+        }else{
+          document.title = data.data.name;
+          printHtml(data.data);
+          if(data.data.images.length != 1){
+            printSlides(data.data.images.length);
+            showSlides(slideIndex);
+          }
         }
       })
       .catch(function(error){

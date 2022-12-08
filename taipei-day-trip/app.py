@@ -1,6 +1,6 @@
 from flask import *
 from flask_restful import Api
-from api.attractions import *
+from api.attraction import *
 from api.user import *
 import config
 
