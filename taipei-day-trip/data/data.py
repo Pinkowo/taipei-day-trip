@@ -8,7 +8,6 @@ mydb = mysql.connector.connect(
   database="trip"
 )
 
-
 ### 景點資料放進 spots 資料表中 ###
 # 開啟json，將資料存進val
 val=[]

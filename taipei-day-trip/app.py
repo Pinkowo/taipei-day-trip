@@ -1,17 +1,17 @@
 from flask import *
 from flask_restful import Api
-from api.categories import *
 from api.attraction import *
-from api.attractions import *
+from api.user import *
+import config
 
 app=Flask(
     __name__,
     static_folder="static",
     static_url_path="/static" 
 )
-app.config["JSON_AS_ASCII"]=False
-app.config["TEMPLATES_AUTO_RELOAD"]=True
-app.config['JSON_SORT_KEYS'] = False
+app.config.from_object(config.DevelopmentConfig)
+app.register_blueprint(atts_blueprints, url_prefix='/api')
+app.register_blueprint(user_blueprints, url_prefix='/api')
 api = Api(app)
 
 # Pages
@@ -28,9 +28,5 @@ def booking():
 def thankyou():
 	return render_template("thankyou.html")
 
-# APIs
-app.register_blueprint(atts_blueprints)
-app.register_blueprint(att_blueprints)
-app.register_blueprint(cat_blueprints)
-
-app.run(host="0.0.0.0",port=3000,debug=True)
+if __name__ == "__main__":
+	app.run(host="0.0.0.0",port=3000)

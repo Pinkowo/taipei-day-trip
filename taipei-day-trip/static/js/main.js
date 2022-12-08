@@ -1,9 +1,9 @@
 let isLoading = false;
 
 // 輸入框與景點列表
-let searchList = document.getElementById("search-list");
-let searchInput = document.getElementById("search-input");
-let searchUl = searchList.getElementsByTagName('ul')[0];
+const searchList = document.getElementById("search-list");
+const searchInput = document.getElementById("search-input");
+const searchUl = searchList.getElementsByTagName('ul')[0];
 
 function showList(){
     searchList.classList.remove("hide");
@@ -45,10 +45,10 @@ fetch("/api/categories")
     });
 
 // 搜尋框串接 /api/attractions 搜尋關鍵字
-let searchBtn = document.getElementById("search-btn");
+const searchBtn = document.getElementById("search-btn");
+const gridBox = document.getElementById("grid-box");
 let keyword = searchInput.value;
 let nextPage = 0;
-let gridBox = document.getElementById("grid-box");
 
 searchBtn.addEventListener('click',function(){
     keyword = document.getElementById("search-input").value;
@@ -63,7 +63,9 @@ searchBtn.addEventListener('click',function(){
 });
 
 // fetch 載入頁面
+const loading = document.getElementById("loading");
 const getMoreData =() => {
+    loading.style.display = "flex";
     let url = "/api/attractions?page="+nextPage;
     if(keyword != ''){
         url = "/api/attractions?page="+nextPage+"&keyword="+keyword;
@@ -91,6 +93,7 @@ const getMoreData =() => {
                     printCard(data.data,i);
                 }
             }
+            loading.style.display = "none";
             isLoading = false;
         })
         .catch(function(error){
