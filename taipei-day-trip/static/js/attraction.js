@@ -1,11 +1,11 @@
 // fetch 載入頁面
-const id = location.href.split("attraction/")[1];
+const attId = location.href.split("attraction/")[1];
 let slideIndex = 1;
 let slides = [];
 let dots = [];
 
 const getData =() => {
-  let url = "/api/attraction/"+id;
+  let url = "/api/attraction/"+attId;
   fetch(url)
       .then(function(response){
           return response.json();
@@ -86,6 +86,7 @@ function printBottom(description, address, transport){
   bottom.insertAdjacentHTML('afterbegin',content);
 }
 
+
 // 印 slide 的箭頭和圓點
 function printSlides(n){
   let arrow = `
@@ -110,7 +111,6 @@ function printSlides(n){
   slideBox.appendChild(dotDiv);
 }
 
-
 // 照片切換 slides
 function plusSlides(n) {
     showSlides(slideIndex += n);
@@ -134,12 +134,51 @@ function currentSlide(n) {
     showSlides(slideIndex = n);
 }
 
+
 // radio 切換價格
+let tripPrice = 2000;
 function changePrice(price){
     let text = "新台幣 " + price + " 元";
     document.getElementById("price").innerHTML = text;
+    tripPrice = price;
 }
 
 // datepicker 的 min 設置
 const date = document.getElementById("tripDate");
 date.min = new Date().toISOString().split("T")[0];
+
+
+// 開始預約行程
+const tripForm = document.getElementById("right-form");
+let tripTime;
+tripForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    tripTime = document.querySelector('[name=time]:checked').value;
+    startBooking(BookAPI);
+});
+
+const BookAPI = "/api/booking"
+const token = document.cookie.split('=')[1];
+async function startBooking(url){
+    try{
+        const response = 
+          await fetch(url,{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                attractionId: attId,
+                date: tripForm[0].value,
+                time: tripTime,
+                price: tripPrice  
+            })
+          });
+        await response.json();
+        location.href = "/booking";
+
+    } catch(error){
+        console.log(error);
+    }
+}

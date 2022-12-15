@@ -1,3 +1,19 @@
+// 判斷使用者是否為登入狀態
+let isUserLogin = false;
+
+// 按下預定行程按鈕但尚未登入，登入後自動跳轉 booking 頁
+let goBooking = false;
+
+// 預定行程
+function bookTrip(){
+    if(isUserLogin){
+        location.href = "/booking";
+    }else{
+        goBooking = true;
+        openModal();
+    }
+}
+
 // 登入註冊 modal
 // 開啟關閉
 const modal = document.getElementById("modal");
@@ -17,6 +33,7 @@ function closeModal(){
     // 開啟滾動條
     document.body.style.overflow = "auto";
     document.body.style.marginRight = 0;
+    goBooking = false;
 }
 
 window.addEventListener('click', function (e) {
@@ -113,6 +130,10 @@ function signIn() {
         if(data.ok){
             btns[1].style.display = "none";
             btns[2].style.display = "inline-block";
+            isUserLogin = true;
+            if(goBooking){
+                location.href = "/booking";
+            }
             closeModal();
         }
         else if(data.error){
@@ -133,6 +154,11 @@ function logOut(){
             btns[1].style.display = "inline-block";
             btns[2].style.display = "none";
             location.reload(true);
+            
+            //在 booking 頁登出時跳轉至首頁 
+            if(location.pathname == "/booking"){
+                location.href = "/";
+            }
         }
         else if(data.error){
             print(data.error);
@@ -144,18 +170,32 @@ function logOut(){
 }
 
 // 每次開啟頁面時檢查會員登入狀態
-fetch("/api/user/auth",{method: 'GET'})
-    .then((response) => response.json())
-    .then((data) => {
-        if(data.data == null){
-            btns[1].style.display = "inline-block";
-            btns[2].style.display = "none";
-        }
-        else{
+const AuthAPI = "/api/user/auth"
+async function checkStatus(url){
+    try{
+        const response = await fetch(url,{method: 'GET'});
+        const data = await response.json();
+        if(data.data != null){
             btns[1].style.display = "none";
             btns[2].style.display = "inline-block";
+            isUserLogin = true;
+
+            if(location.pathname == "/booking"){
+                document.getElementById('nickname').innerHTML = data.data['name'];
+            }
         }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+        else{
+            btns[1].style.display = "inline-block";
+            btns[2].style.display = "none";
+            isUserLogin = false;
+            
+            if(location.pathname == "/booking"){
+                location.href = "/";
+            }
+        }
+    } catch(error){
+        console.log(error);
+    }
+}
+
+checkStatus(AuthAPI);

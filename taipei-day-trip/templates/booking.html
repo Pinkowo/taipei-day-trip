@@ -1,0 +1,72 @@
+{% extends "base.html" %}  
+
+{% block css %}<link rel="stylesheet" href="/static/css/booking.css">{% endblock %}
+
+{% block body %}
+
+    <h3 class="title-text">您好，
+        <span id="nickname">User</span>，待預訂的行程如下：
+    </h3>
+    <div class="title-text" id="trip-hint">目前沒有任何待預訂的行程</div>
+
+    <section id="trip-section">
+        
+    </section>
+
+    <hr>
+
+    <section class="contact-section">
+        <h4>您的聯絡資訊</h4>
+        <form id="info-form">
+            <label for="name">聯絡姓名：</label>
+            <input type="text" name="name"><br>
+
+            <label for="email">連絡信箱：</label>
+            <input type="email" name="email"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"><br>
+
+            <label for="phone">手機號碼：</label>
+            <input type="tel" name="phone" pattern="[0-9]*"><br>
+        </form>
+        <p>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
+    </section>
+
+    <hr>
+
+    <section class="credit-section">
+        <h4>信用卡付款資訊</h4>
+        <form id="credit-form">
+            <label for="cardnum">卡片號碼：</label>
+            <input type="text" name="cardnum" placeholder="**** **** **** ****" 
+                pattern="[0-9]*" inputmode="numeric"><br>
+
+            <label for="exp">過期時間：</label>
+            <input type="text" name="exp" placeholder="MM / YY"
+                pattern="[0-9]*" inputmode="numeric"><br>
+
+            <label for="cvv">驗證密碼：</label>
+            <input type="password" name="cvv" placeholder="CVV"
+                pattern="[0-9]*" inputmode="numeric"
+                autocomplete="on"><br>
+        </form>
+    </section>
+
+    <hr>
+
+    <section class="total-section">
+        <div>
+            <div id="total-text">總價：新台幣 
+                <span id="total-price">2000</span> 元
+            </div>
+            <button class="btn" id="total-btn">確認訂購並付款</button>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+{% block fillFooter %}
+    <div class="fill-footer"></div>
+{% endblock %}
+
+{% block js %}<script src="/static/js/booking.js"></script>{% endblock %}

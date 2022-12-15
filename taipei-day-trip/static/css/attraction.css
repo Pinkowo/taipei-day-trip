@@ -120,7 +120,7 @@ section{
     background-color: #E8E8E8;
     padding: 15px 20px;
     border-radius: 5px;
-    height: 282px;
+    height: 272px;
 }
 #right-form div{
     height: 22px;
@@ -130,7 +130,7 @@ section{
 .intro-trip{
     padding-top: 1px;
     padding-bottom: 1px;
-    height: auto;
+    height: auto !important;
 }
 .date{
     height: 35px;
@@ -184,7 +184,7 @@ label{
     margin-right: 18px;
     margin-left: 9px;
 }
-#right-form button{
+#submit-btn{
     background-color: #448899;
     border: 0;
     border-radius: 5px;

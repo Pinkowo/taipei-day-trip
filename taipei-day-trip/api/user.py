@@ -1,9 +1,9 @@
 from flask import *
-from flask_bcrypt import Bcrypt
-import jwt
 import sys
 sys.path.append("..") 
-import data.db as db
+import modal.user as db
+from flask_bcrypt import Bcrypt
+import jwt
 from config import PR_KEY
 
 user_blueprints = Blueprint( 'user', __name__ )
@@ -19,7 +19,7 @@ def SignUp():
         password = request.json["password"]
         hashed_password = bcrypt.generate_password_hash(password=password)
         
-        result = db.insert_user(name,email,hashed_password)
+        result = db.add_user(name,email,hashed_password)
         if result == 0:
             raise ValueError("Email 已被註冊")
         
@@ -42,12 +42,11 @@ def SignUp():
         res = make_response(jsonify(data),500)
     finally:
         return res
-
     
 # GET 取得當前登入的會員資訊
 # PUT 登入 / DELETE 登出會員帳戶
 @user_blueprints.route('/user/auth', methods=['GET','PUT','DELETE'])
-def SignIn():
+def Auth():
     global private_key
     try:
         if request.method == 'GET':
@@ -67,7 +66,7 @@ def SignIn():
             email = request.json["email"]
             password = request.json["password"]
             
-            result = db.select_user(email)
+            result = db.get_user_by_email(email)
             if result == None:
                 raise ValueError("查無此帳號")
             
