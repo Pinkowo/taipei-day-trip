@@ -7,8 +7,7 @@ async function getBookData(){
           await fetch(BookAPI,{
             method: 'GET',
             headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
+              'Content-Type': 'application/json'
             }
           });
         const data = await response.json();
@@ -94,7 +93,6 @@ async function deleteBook(attId){
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({
                 attractionId: attId,

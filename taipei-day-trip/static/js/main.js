@@ -34,7 +34,7 @@ fetch("/api/categories")
     })
     .then(function(data){
         for(let i=0;i<data.data.length;i++){
-            let content = `
+            const content = `
                 <li onclick="printCat(this)">${data.data[i]}</li>
             `
             searchUl.insertAdjacentHTML('beforeend',content);
@@ -77,7 +77,7 @@ const getMoreData =() => {
         .then(function(data){
             if(data.data.length == 0){
                 observer.unobserve(target);
-                let content = `
+                const content = `
                     <div class="centerText">
                         查無相關景點
                     </div>
@@ -102,15 +102,15 @@ const getMoreData =() => {
 }
 
 // 呼叫後印出一張 card
-function printCard(data, i){
+async function printCard(data, i){
     if(data[i].mrt == null){
         data[i].mrt = data[i].name;
     }
-    let content = `
+    const content = `
         <div class="pre-card">
             <a class="clear" href="/attraction/${data[i].id}">
                 <figure>
-                    <img src=${data[i].images[0]} alt="">
+                    <img src=${data[i].images[0]} class="pre-img" alt="">
                     <figcaption>
                         ${data[i].name}
                     </figcaption>
@@ -121,7 +121,7 @@ function printCard(data, i){
                 </div>
             </a>
         </div>
-        `
+        `   
     gridBox.insertAdjacentHTML('beforeend',content);
 }
 

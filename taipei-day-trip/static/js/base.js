@@ -18,8 +18,6 @@ function bookTrip(){
 // 開啟關閉
 const modal = document.getElementById("modal");
 const modalCross = document.getElementsByClassName("modal-cross");
-const signInModal = document.getElementById("modal-signin");
-const signUpModal = document.getElementById("modal-signup");
 const scrollBarWidth = window.innerWidth - document.body.clientWidth;
 
 function openModal(){
@@ -29,16 +27,21 @@ function openModal(){
     document.body.style.marginRight = scrollBarWidth + "px";
 }
 function closeModal(){
+    switchModal(1);
     modal.style.display = "none";
     // 開啟滾動條
     document.body.style.overflow = "auto";
     document.body.style.marginRight = 0;
+    // 判斷是否前往 Booking 頁(點擊預訂行程)
+    if(goBooking && isUserLogin){
+        location.href = "/booking";
+    }
     goBooking = false;
 }
 
 window.addEventListener('click', function (e) {
     if(modal.style.display == "block"){
-        if(e.target==modalCross[0] || e.target==modalCross[1]){
+        if(e.target==modalCross[0]){
             closeModal();
         }else{
             openModal();
@@ -47,40 +50,70 @@ window.addEventListener('click', function (e) {
 }, true);
 
 // 切換
+const signUpForm = document.getElementById("form-signup");
+const signInForm = document.getElementById("form-signin");
+const signInModal = document.getElementById("modal-signin");
+const signUpModal = document.getElementById("modal-signup");
+const successModal = document.getElementById("modal-success");
+const bookSuccessModal = document.getElementById("modal-book-success");
+const bookFailModal = document.getElementById("modal-book-fail");
+const modals = [signInModal, signUpModal, successModal, bookSuccessModal, bookFailModal];
+
 function switchModal(status = 0){
     switch (status){
-        case 0:
+        case 0: //註冊
             signInModal.style.display = 'none';
             signUpModal.style.display = 'block';
+            hint('signIn', '');
+            signInForm.reset();
             break;
-        case 1:
+        case 1: //登入
             signUpModal.style.display = 'none';
             signInModal.style.display = 'block';
+            hint('signUp', '');
+            signUpForm.reset();
+            break;
+        case 2: //登入成功
+            signInModal.style.display = 'none';
+            successModal.style.display = 'block';
+            break;
+        case 3: //預訂成功
+            modals.forEach(function(modal) {
+                modal.style.display = 'none';
+            });
+            bookSuccessModal.style.display = 'block';
+            goBooking = true;
+            break;
+        case 4: //預訂失敗
+            modals.forEach(function(modal) {
+                modal.style.display = 'none';
+            });
+            bookFailModal.style.display = 'block';
             break;
     }
 }
 
 
 // 註冊登入表單 & 串接 API
-// 文字提示 0=signUpHint 1=signInHint
 const signUpHint = document.getElementById("hint-signup");
 const signInHint = document.getElementById("hint-signin");
-formHint = [signUpHint,signInHint];
+const formHint = {"signUp":signUpHint, "signIn":signInHint};
 
 function hint(form, msg, color="red"){
     formHint[form].style.color = color;
     formHint[form].innerHTML = msg;
 }
 
+
+const UserAPI = "/api/user"
 // 註冊
-const signUpForm = document.getElementById("form-signup");
 signUpForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     signUp();
 });
 
 function signUp() { 
-    fetch("/api/user",{
+    fetch(UserAPI,{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -94,10 +127,10 @@ function signUp() {
     .then((response) => response.json())
     .then((data) => {
         if(data.ok){
-            hint(0, '註冊成功', 'green');
+            hint('signUp', '註冊成功', 'green');
         }
         else if(data.error){
-            hint(0, data.message);
+            hint('signUp', data.message);
         }
     })
     .catch((error) => {
@@ -105,8 +138,9 @@ function signUp() {
     });
 }
 
+
+const AuthAPI = "/api/user/auth"
 // 登入
-const signInForm = document.getElementById("form-signin");
 signInForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     signIn();
@@ -115,7 +149,7 @@ signInForm.addEventListener('submit', (e)=>{
 const btns = document.getElementsByClassName('nav-btn');
 
 function signIn() { 
-    fetch("/api/user/auth",{
+    fetch(AuthAPI,{
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -131,13 +165,10 @@ function signIn() {
             btns[1].style.display = "none";
             btns[2].style.display = "inline-block";
             isUserLogin = true;
-            if(goBooking){
-                location.href = "/booking";
-            }
-            closeModal();
+            switchModal(2);
         }
         else if(data.error){
-            hint(1, data.message);
+            hint('signIn', data.message);
         }
     })
     .catch((error) => {
@@ -147,7 +178,7 @@ function signIn() {
 
 // 登出
 function logOut(){
-    fetch("/api/user/auth",{method: 'DELETE'})
+    fetch(AuthAPI,{method: 'DELETE'})
     .then((response) => response.json())
     .then((data) => {
         if(data.ok){
@@ -170,10 +201,9 @@ function logOut(){
 }
 
 // 每次開啟頁面時檢查會員登入狀態
-const AuthAPI = "/api/user/auth"
-async function checkStatus(url){
+async function checkStatus(){
     try{
-        const response = await fetch(url,{method: 'GET'});
+        const response = await fetch(AuthAPI,{method: 'GET'});
         const data = await response.json();
         if(data.data != null){
             btns[1].style.display = "none";
@@ -198,4 +228,4 @@ async function checkStatus(url){
     }
 }
 
-checkStatus(AuthAPI);
+checkStatus();

@@ -3,32 +3,32 @@ const attId = location.href.split("attraction/")[1];
 let slideIndex = 1;
 let slides = [];
 let dots = [];
+let isLoaded = false;
 
-const getData =() => {
-  let url = "/api/attraction/"+attId;
-  fetch(url)
-      .then(function(response){
-          return response.json();
-      })
-      .then(function(data){
-        const section = document.querySelector("section");
+async function getData(){
+  try{
+      const url = "/api/attraction/"+attId;
+      const response = await fetch(url,{method: 'GET'});
+      const data = await response.json();
+      const section = document.querySelector("section");
         if(data.error){
           section.innerHTML = "請重新輸入編號";
           section.classList.add("section-empty");
         }else{
           document.title = data.data.name;
           printHtml(data.data);
-          if(data.data.images.length != 1){
+          if(data.data.images.length != 1 && isLoaded){
+            console.log("3", isLoaded);
             printSlides(data.data.images.length);
             showSlides(slideIndex);
           }
         }
-      })
-      .catch(function(error){
-          console.log(error);
-      });
+    } catch(error){
+      console.log(error);
+  }
 }
-window.addEventListener("load", getData, false);
+
+getData();
 
 // html
 const slideBox = document.getElementById("box-content");
@@ -49,18 +49,20 @@ function printImg(images){
 
   for(let i=0;i<images.length;i++){
     const slideImg = document.createElement("img");
+    slideImg.onload = () => {
+      slideDiv.appendChild(slideImg);
+    }
     slideImg.src = images[i];
     slides.push(slideImg);
-    slideDiv.appendChild(slideImg);
   }
-
+  isLoaded = true;
   slideBox.appendChild(slideDiv);
 }
 
 // print right-box
 const rightBox = document.getElementById("right-box");
 function printForm(name, cat, mrt){
-  let content = `
+  const content = `
     <h3 class="fz-24 fw-700" style="text-align: left;">${name}</h3>
     <div class="intro">${cat} at ${mrt}</div>
   `
@@ -70,7 +72,7 @@ function printForm(name, cat, mrt){
 // print bottom
 const bottom = document.getElementById("bottom");
 function printBottom(description, address, transport){
-  let content = `
+  const content = `
     <div>
       <p>${description}</p>
     </div>
@@ -89,7 +91,7 @@ function printBottom(description, address, transport){
 
 // 印 slide 的箭頭和圓點
 function printSlides(n){
-  let arrow = `
+  const arrow = `
     <a class="prev" onclick="plusSlides(-1)">
       <img src="/static/images/icon/btn_leftArrow.svg" alt="prev">
     </a>
@@ -138,7 +140,7 @@ function currentSlide(n) {
 // radio 切換價格
 let tripPrice = 2000;
 function changePrice(price){
-    let text = "新台幣 " + price + " 元";
+    const text = "新台幣 " + price + " 元";
     document.getElementById("price").innerHTML = text;
     tripPrice = price;
 }
@@ -150,33 +152,49 @@ date.min = new Date().toISOString().split("T")[0];
 
 // 開始預約行程
 const tripForm = document.getElementById("right-form");
-let tripTime;
 tripForm.addEventListener('submit', (e)=>{
     e.preventDefault();
-    tripTime = document.querySelector('[name=time]:checked').value;
-    startBooking(BookAPI);
+
+    const tripTime = document.querySelector('[name=time]:checked');
+    const tripDate = tripForm[0].value;
+    // 判斷使用者是否登入以及表單是否空白 
+    if(isUserLogin){
+      if(tripTime==null || tripDate ==''){
+        openModal();
+        switchModal(4);
+      }else{
+        startBooking(tripTime.value, tripDate);
+      }
+    }else{
+      openModal();
+    }
 });
 
 const BookAPI = "/api/booking"
 const token = document.cookie.split('=')[1];
-async function startBooking(url){
+async function startBooking(tripTime, tripDate){
     try{
         const response = 
-          await fetch(url,{
+          await fetch(BookAPI,{
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({
                 attractionId: attId,
-                date: tripForm[0].value,
+                date: tripDate,
                 time: tripTime,
                 price: tripPrice  
             })
           });
-        await response.json();
-        location.href = "/booking";
+        const data = await response.json();
+        if(data.ok){
+          openModal();
+          switchModal(3);
+        }else{
+          openModal();
+          switchModal(4);
+        }
 
     } catch(error){
         console.log(error);

@@ -133,6 +133,15 @@ footer{
     line-height: 100%;
     margin: 15px;
 }
+.modal-text{
+    font-size: 18px;
+    color: #666666;
+    text-align: center;
+    width: 310px;
+    height: 60px;
+    line-height: 60px;
+    margin: 15px;
+}
 .modal-input{
     width: 278px;
     height: 15px;
