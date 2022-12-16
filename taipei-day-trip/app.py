@@ -1,7 +1,6 @@
 from flask import *
 from flask_restful import Api
-from api.attraction import *
-from api.user import *
+import api
 import config
 
 app=Flask(
@@ -10,8 +9,9 @@ app=Flask(
     static_url_path="/static" 
 )
 app.config.from_object(config.DevelopmentConfig)
-app.register_blueprint(atts_blueprints, url_prefix='/api')
-app.register_blueprint(user_blueprints, url_prefix='/api')
+app.register_blueprint(api.atts_blueprints, url_prefix='/api')
+app.register_blueprint(api.user_blueprints, url_prefix='/api')
+app.register_blueprint(api.book_blueprints, url_prefix='/api')
 api = Api(app)
 
 # Pages

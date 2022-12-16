@@ -1,14 +1,14 @@
 from flask import *
+import sys
+sys.path.append("..")
+import re
+import modal.user as db
 from flask_bcrypt import Bcrypt
 import jwt
-import sys
-sys.path.append("..") 
-import data.db as db
 from config import PR_KEY
 
 user_blueprints = Blueprint( 'user', __name__ )
 bcrypt = Bcrypt()
-private_key = PR_KEY
 
 # 註冊一個新的會員
 @user_blueprints.route('/user', methods=['POST'])
@@ -16,10 +16,12 @@ def SignUp():
     try:
         name = request.json["name"]
         email = request.json["email"]
+        if not re.match('^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$',email):
+            raise ValueError("請輸入正確的 Email 格式")
         password = request.json["password"]
         hashed_password = bcrypt.generate_password_hash(password=password)
         
-        result = db.insert_user(name,email,hashed_password)
+        result = db.add_user(name,email,hashed_password)
         if result == 0:
             raise ValueError("Email 已被註冊")
         
@@ -42,32 +44,51 @@ def SignUp():
         res = make_response(jsonify(data),500)
     finally:
         return res
-
     
-# GET 取得當前登入的會員資訊
-# PUT 登入 / DELETE 登出會員帳戶
-@user_blueprints.route('/user/auth', methods=['GET','PUT','DELETE'])
-def SignIn():
-    global private_key
-    try:
-        if request.method == 'GET':
+    
+# 裝飾器: 驗證 token
+def check_token(func):
+    def wrapper():
+        try:
             token = request.cookies.get('token')
-            if token == None:
+            if token is None:
                 data = {
                     "data": None
                 }
             else:
-                decoded_token = jwt.decode(token, private_key, algorithms="HS256")
+                decoded_token = jwt.decode(token, PR_KEY, algorithms="HS256")
                 data = {
                     "data": decoded_token
                 }
-            res = make_response(jsonify(data),200)
-            
+            return func(data)
+        except Exception as e:
+            print(e)
+            data = {
+                "error": True,
+                "message": "伺服器內部錯誤"
+            }
+            res = make_response(jsonify(data),500)
+            return res
+    return wrapper
+
+# GET 取得當前登入的會員資訊
+@user_blueprints.route('/user/auth', methods=['GET'])
+@check_token
+def Auth_Get(data):
+    res = make_response(jsonify(data),200)
+    return res
+
+# PUT 登入 / DELETE 登出會員帳戶
+@user_blueprints.route('/user/auth', methods=['PUT','DELETE'])
+def Auth():
+    try:    
         if request.method == 'PUT':
             email = request.json["email"]
+            if not re.match('^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$',email):
+                raise ValueError("請輸入正確的 Email 格式")
             password = request.json["password"]
             
-            result = db.select_user(email)
+            result = db.get_user_by_email(email)
             if result == None:
                 raise ValueError("查無此帳號")
             
@@ -76,7 +97,7 @@ def SignIn():
                 raise ValueError("密碼錯誤")
             
             encoded_token = jwt.encode({"id": result[0],"name": result[1],"email": result[2]},\
-                private_key, algorithm="HS256")
+                PR_KEY, algorithm="HS256")
             
             data = {
                 "ok": True

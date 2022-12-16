@@ -1,7 +1,7 @@
 from flask import *
 import sys
 sys.path.append("..") 
-import data.db as db
+import modal.attraction as db
 
 atts_blueprints = Blueprint( 'atts', __name__ )
 
@@ -17,10 +17,10 @@ def Attractions():
             raise ValueError("頁碼最小值為 0")
         # 沒有輸入關鍵字
         if keyword == None: 
-            result = db.select_limit(13,int(page)*12)
+            result = db.get_attraction_by_page(13,int(page)*12)
         # 有輸入關鍵字
         else:
-            result = db.select_search(keyword,13,int(page)*12)
+            result = db.get_attraction_with_keyword(keyword,13,int(page)*12)
         # 把12筆資料放入data
         results = []
         for x in result:
@@ -67,7 +67,7 @@ def Attractions():
 @atts_blueprints.route('/attraction/<int:attractionId>', methods=['GET'])
 def AttractionId(attractionId):
     try:
-        result = db.select_id(attractionId)
+        result = db.get_attraction_by_id(attractionId)
         if result[0] == None:
             raise ValueError("無此景點編號，請重新嘗試")
         data = {
@@ -104,7 +104,7 @@ def AttractionId(attractionId):
 @atts_blueprints.route('/categories', methods=['GET'])
 def Categories():
     try:
-        result = db.select_cat()
+        result = db.get_all_categories()
         data = {
             "data": result[0][0].split(',')
         }
