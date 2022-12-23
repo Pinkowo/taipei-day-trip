@@ -28,6 +28,9 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
 	return render_template("thankyou.html")
+@app.errorhandler(404)
+def error_data(error):
+    return render_template("error.html"),404
 
 if __name__ == "__main__":
 	app.run(host="0.0.0.0",port=3000)

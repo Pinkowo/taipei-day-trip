@@ -45,8 +45,7 @@ orderBtn.addEventListener('click', (e)=>{
     const checkStatus = checkForm(orderName,orderEmail,orderPhone);
 
     if(checkStatus){
-        const prime = getPrime(orderName,orderEmail,orderPhone);
-        goThankyouPage(prime,orderName,orderEmail,orderPhone);
+        getPrime(orderName,orderEmail,orderPhone);
     }
 });
 
@@ -75,32 +74,26 @@ function checkForm(orderName,orderEmail,orderPhone){
     }
 }
 
-// 送出資料至後端並跳轉
-async function goThankyouPage(prime,orderName,orderEmail,orderPhone){
-    if(prime == false){
+// 取得 prime 並跳轉
+function getPrime(orderName,orderEmail,orderPhone) {
+    const tappayStatus = TPDirect.card.getTappayFieldsStatus();
+
+    if (tappayStatus.canGetPrime === false){
         openModal();
         switchModal(2,"訂購失敗，請確認是否填寫完整");
-    }else{
-        const orderNum = await postOrder(prime,orderName,orderEmail,orderPhone);
+        return;
+    }
+
+    TPDirect.card.getPrime((result) => {
+        if (result.status !== 0) {
+            openModal();
+            switchModal(2,"訂購失敗，"+ result.msg);
+            return;
+        }      
+        const prime = result.card.prime;
+        postOrder(prime,orderName,orderEmail,orderPhone);
         openModal();
         switchModal(2,"訂購成功，兩秒後網頁自動跳轉");
-        setTimeout(function(){
-            location.href = "/thankyou?number=" + orderNum;
-        },2000);
-    }
-}
-
-// 取得 prime
-async function getPrime() {
-    const tappayStatus = TPDirect.card.getTappayFieldsStatus();
-    if (tappayStatus.canGetPrime === false) return false;
-    await TPDirect.card.getPrime((result) => {
-        if (result.status !== 0) {
-            return false;
-        }
-        else{
-            return result.card.prime;
-        }
     })
 }
 
@@ -123,7 +116,9 @@ async function postOrder(prime,orderName,orderEmail,orderPhone){
           });
         const data = await response.json();
 
-        return data['data']['number'];
+        setTimeout(function(){
+            location.href = "/thankyou?number=" + data['data']['number'];
+        },2000);
         
     } catch(error){
         console.log(error);
