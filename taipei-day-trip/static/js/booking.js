@@ -29,15 +29,16 @@ const hrs = document.getElementsByTagName("hr");
 const emptyText = document.getElementById("trip-hint");
 
 function emptyCart(){
-    for(let i=0;i<sections.length-1;i++){
-        sections[i].classList.add("hide");
-        hrs[i].classList.add("hide");
-    }
-    sections[3].classList.add("hide");
+    emptyText.classList.remove("hide");
 }
 
 function printCart(data){
-    emptyText.classList.add("hide");
+    for(let i=0;i<=2;i++){
+        sections[i].classList.remove("hide");
+        hrs[i].classList.remove("hide");
+    }
+    sections[3].classList.remove("hide");
+
     let totPrice = 0;
     for(let i=0;i<data.length;i++){
         totPrice += data[i].price;

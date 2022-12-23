@@ -54,12 +54,10 @@ const signUpForm = document.getElementById("form-signup");
 const signInForm = document.getElementById("form-signin");
 const signInModal = document.getElementById("modal-signin");
 const signUpModal = document.getElementById("modal-signup");
-const successModal = document.getElementById("modal-success");
-const bookSuccessModal = document.getElementById("modal-book-success");
-const bookFailModal = document.getElementById("modal-book-fail");
-const modals = [signInModal, signUpModal, successModal, bookSuccessModal, bookFailModal];
+const msgModal = document.getElementById("modal-msg");
+const msgText = document.getElementById("modal-text");
 
-function switchModal(status = 0){
+function switchModal(status = 0, msg){
     switch (status){
         case 0: //註冊
             signInModal.style.display = 'none';
@@ -73,22 +71,10 @@ function switchModal(status = 0){
             hint('signUp', '');
             signUpForm.reset();
             break;
-        case 2: //登入成功
+        case 2: //自定義文字
             signInModal.style.display = 'none';
-            successModal.style.display = 'block';
-            break;
-        case 3: //預訂成功
-            modals.forEach(function(modal) {
-                modal.style.display = 'none';
-            });
-            bookSuccessModal.style.display = 'block';
-            goBooking = true;
-            break;
-        case 4: //預訂失敗
-            modals.forEach(function(modal) {
-                modal.style.display = 'none';
-            });
-            bookFailModal.style.display = 'block';
+            msgText.innerHTML = msg;
+            msgModal.style.display = 'block';
             break;
     }
 }
@@ -165,7 +151,7 @@ function signIn() {
             btns[1].style.display = "none";
             btns[2].style.display = "inline-block";
             isUserLogin = true;
-            switchModal(2);
+            switchModal(2,"登入成功");
         }
         else if(data.error){
             hint('signIn', data.message);
@@ -212,6 +198,8 @@ async function checkStatus(){
 
             if(location.pathname == "/booking"){
                 document.getElementById('nickname').innerHTML = data.data['name'];
+                document.getElementById('contact-name').value = data.data['name'];
+                document.getElementById('contact-email').value = data.data['email'];
             }
         }
         else{
@@ -219,7 +207,7 @@ async function checkStatus(){
             btns[2].style.display = "none";
             isUserLogin = false;
             
-            if(location.pathname == "/booking"){
+            if(location.pathname == "/booking" || location.pathname == "/thankyou"){
                 location.href = "/";
             }
         }

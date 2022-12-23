@@ -5,7 +5,6 @@ def get_trip_by_user_id(user_id):
     mydb = db_connect()
     try:
         with mydb.cursor() as cursor:
-            cursor.execute("SET SESSION group_concat_max_len = 10240;")
             sql = '''
                 SELECT 
                     spots.id,
@@ -18,13 +17,14 @@ def get_trip_by_user_id(user_id):
                 FROM cart
                 LEFT JOIN spots ON cart.attraction_id = spots.id
                 LEFT JOIN imgs ON spots.id = imgs.spot_id
-                WHERE user_id = %s GROUP BY spots.id
+                WHERE user_id = %s AND order_num = '0' 
+                GROUP BY spots.id
             '''
             val = (user_id,)
             cursor.execute(sql,val)
             result = cursor.fetchall()
-    except:
-        print("error")
+    except Exception as e:
+        print(e)
     finally:
         mydb.close()
         return result
@@ -52,8 +52,8 @@ def add_trip(user_id,att_id,date,time,price):
             cursor.execute(sql,val)
             mydb.commit()
             result = cursor.fetchone()
-    except:
-        print("error")
+    except Exception as e:
+        print(e)
     finally:
         mydb.close()
         return result
@@ -63,18 +63,18 @@ def delete_trip_by_id(user_id, att_id):
     mydb = db_connect()
     try:
         with mydb.cursor() as cursor:
-            cursor.execute("SET SESSION group_concat_max_len = 10240;")
             sql = '''
                 DELETE FROM cart 
                 WHERE user_id = %s
                 AND attraction_id = %s
+                AND order_num = '0'
             '''
             val = (user_id, att_id)
             cursor.execute(sql,val)
             mydb.commit()
             result = cursor.fetchall()
-    except:
-        print("error")
+    except Exception as e:
+        print(e)
     finally:
         mydb.close()
         return result

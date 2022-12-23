@@ -198,6 +198,9 @@ label{
     color:white;
     cursor: pointer;
 }
+#submit-btn:active{
+    background-color: #316d7b;
+}
 
 /* bottom */
 #bottom{

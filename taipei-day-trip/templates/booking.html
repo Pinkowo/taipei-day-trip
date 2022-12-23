@@ -7,53 +7,56 @@
     <h3 class="title-text">您好，
         <span id="nickname">User</span>，待預訂的行程如下：
     </h3>
-    <div class="title-text" id="trip-hint">目前沒有任何待預訂的行程</div>
+    <div class="title-text hide" id="trip-hint">目前沒有任何待預訂的行程</div>
 
-    <section id="trip-section">
+    <section id="trip-section" class="hide">
         
     </section>
 
-    <hr>
+    <hr class="hide">
 
-    <section class="contact-section">
+    <section class="contact-section hide">
         <h4>您的聯絡資訊</h4>
         <form id="info-form">
             <label for="name">聯絡姓名：</label>
-            <input type="text" name="name"><br>
+            <input type="text" name="name" id="contact-name"><br>
 
             <label for="email">連絡信箱：</label>
-            <input type="email" name="email"
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"><br>
+            <input type="email" name="email" id="contact-email"><br>
 
             <label for="phone">手機號碼：</label>
-            <input type="tel" name="phone" pattern="[0-9]*"><br>
+            <input type="tel" name="phone" id="contact-phone"
+                oninput = "value=value.replace(/[^\d]/g,'')"><br>
         </form>
         <p>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
     </section>
 
-    <hr>
+    <hr class="hide">
 
-    <section class="credit-section">
+    <section class="credit-section hide">
         <h4>信用卡付款資訊</h4>
+
         <form id="credit-form">
-            <label for="cardnum">卡片號碼：</label>
-            <input type="text" name="cardnum" placeholder="**** **** **** ****" 
-                pattern="[0-9]*" inputmode="numeric"><br>
+            <div class="credit-box">
+                <div>卡片號碼：</div>
+                <div class="credit-input" id="card-number"></div>
+            </div>
 
-            <label for="exp">過期時間：</label>
-            <input type="text" name="exp" placeholder="MM / YY"
-                pattern="[0-9]*" inputmode="numeric"><br>
+            <div class="credit-box">
+                <div>過期時間：</div>
+                <div class="credit-input" id="card-expiration-date"></div>
+            </div>
 
-            <label for="cvv">驗證密碼：</label>
-            <input type="password" name="cvv" placeholder="CVV"
-                pattern="[0-9]*" inputmode="numeric"
-                autocomplete="on"><br>
+            <div class="credit-box">
+                <div>驗證密碼：</div>
+                <div class="credit-input" id="card-ccv"></div>
+            </div>
         </form>
     </section>
 
-    <hr>
+    <hr class="hide">
 
-    <section class="total-section">
+    <section class="total-section hide">
         <div>
             <div id="total-text">總價：新台幣 
                 <span id="total-price">2000</span> 元
@@ -69,4 +72,8 @@
     <div class="fill-footer"></div>
 {% endblock %}
 
-{% block js %}<script src="/static/js/booking.js"></script>{% endblock %}
+{% block js %}
+    <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
+    <script src="/static/js/order.js"></script> 
+    <script src="/static/js/booking.js"></script>
+{% endblock %}

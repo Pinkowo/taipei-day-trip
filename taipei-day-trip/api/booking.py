@@ -2,7 +2,6 @@ from flask import *
 import sys
 sys.path.append("..") 
 import modal.booking as db
-from config import PR_KEY
 from api.user import check_token
 
 book_blueprints = Blueprint( 'book', __name__ )
@@ -11,13 +10,12 @@ book_blueprints = Blueprint( 'book', __name__ )
 # POST 建立 / DELETE 刪除預定行程
 @book_blueprints.route('/booking', methods=['GET','POST','DELETE'])
 @check_token
-def Booking(data):
+def Booking(user_data):
     try:       
-        if data['data'] == None:
+        if user_data['data'] == None:
             assert False, '未登入系統，拒絕存取'
-        else:
-            user_id = data['data']['id']
-            
+        user_id = user_data['data']['id']    
+        
         if request.method == 'GET': 
             result = db.get_trip_by_user_id(user_id)            
             if result == []:
@@ -62,19 +60,18 @@ def Booking(data):
                 "ok": True
             }
             res = make_response(jsonify(data),200)
-            
-    except AssertionError as msg:
-        data = {
-            "error": True,
-            "message": str(msg)
-        }
-        res = make_response(jsonify(data),403)     
     except ValueError as msg:
         data = {
             "error": True,
             "message": str(msg)
         }
         res = make_response(jsonify(data),400)
+    except AssertionError as msg:
+        data = {
+            "error": True,
+            "message": str(msg)
+        }
+        res = make_response(jsonify(data),403)
     except Exception as e:
         print("error:",e)
         data = {

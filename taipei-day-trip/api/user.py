@@ -48,19 +48,22 @@ def SignUp():
     
 # 裝飾器: 驗證 token
 def check_token(func):
-    def wrapper():
+    def wrapper(*args, **kwargs):
         try:
             token = request.cookies.get('token')
             if token is None:
-                data = {
+                data={
                     "data": None
                 }
+                kwargs.setdefault('user_data', data)
+                return func(*args, **kwargs)
             else:
                 decoded_token = jwt.decode(token, PR_KEY, algorithms="HS256")
                 data = {
                     "data": decoded_token
                 }
-            return func(data)
+                kwargs.setdefault('user_data', data)
+                return func(*args, **kwargs)
         except Exception as e:
             print(e)
             data = {
@@ -68,14 +71,15 @@ def check_token(func):
                 "message": "伺服器內部錯誤"
             }
             res = make_response(jsonify(data),500)
-            return res
+            return res 
+    wrapper.__name__ = func.__name__
     return wrapper
 
 # GET 取得當前登入的會員資訊
 @user_blueprints.route('/user/auth', methods=['GET'])
 @check_token
-def Auth_Get(data):
-    res = make_response(jsonify(data),200)
+def Auth_Get(user_data):
+    res = make_response(jsonify(user_data),200)
     return res
 
 # PUT 登入 / DELETE 登出會員帳戶

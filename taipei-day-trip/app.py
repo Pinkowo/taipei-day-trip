@@ -12,6 +12,7 @@ app.config.from_object(config.DevelopmentConfig)
 app.register_blueprint(api.atts_blueprints, url_prefix='/api')
 app.register_blueprint(api.user_blueprints, url_prefix='/api')
 app.register_blueprint(api.book_blueprints, url_prefix='/api')
+app.register_blueprint(api.order_blueprints, url_prefix='/api')
 api = Api(app)
 
 # Pages
