@@ -18,7 +18,6 @@ async function getData(){
           document.title = data.data.name;
           printHtml(data.data);
           if(data.data.images.length != 1 && isLoaded){
-            console.log("3", isLoaded);
             printSlides(data.data.images.length);
             showSlides(slideIndex);
           }
@@ -159,9 +158,12 @@ tripForm.addEventListener('submit', (e)=>{
     const tripDate = tripForm[0].value;
     // 判斷使用者是否登入以及表單是否空白 
     if(isUserLogin){
-      if(tripTime==null || tripDate ==''){
+      if(tripDate ==''){
         openModal();
-        switchModal(4);
+        switchModal(2,"請填寫日期");
+      }else if(tripTime==null){
+        openModal();
+        switchModal(2,"請填寫時間");
       }else{
         startBooking(tripTime.value, tripDate);
       }
@@ -170,10 +172,11 @@ tripForm.addEventListener('submit', (e)=>{
     }
 });
 
-const BookAPI = "/api/booking"
-const token = document.cookie.split('=')[1];
+
+
 async function startBooking(tripTime, tripDate){
     try{
+        const BookAPI = "/api/booking"
         const response = 
           await fetch(BookAPI,{
             method: 'POST',
@@ -190,10 +193,11 @@ async function startBooking(tripTime, tripDate){
         const data = await response.json();
         if(data.ok){
           openModal();
-          switchModal(3);
+          switchModal(2,"預定成功");
+          goBooking = true;
         }else{
           openModal();
-          switchModal(4);
+          switchModal(2,"預定失敗");
         }
 
     } catch(error){

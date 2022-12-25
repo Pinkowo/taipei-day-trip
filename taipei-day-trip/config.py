@@ -20,3 +20,4 @@ class DevelopmentConfig(Config):
 load_dotenv()
 DB_PW = os.getenv('DB_PASSWORD')
 PR_KEY = os.getenv('PRIVATE_KEY')
+TAPPAY_PA_KEY = os.getenv('PARTNER_KEY')
