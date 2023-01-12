@@ -1,0 +1,104 @@
+/*!********************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./public/index.css ***!
+  \********************************************************************/
+body,
+html {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(45deg, #788ff5, #1deeee);
+}
+
+#root {
+    font-size: 50px;
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #f6f6f6;
+    font-size: 5rem;
+    margin-top: -5px;
+    margin-bottom: 25px;
+}
+
+.link-btn {
+    color: rgba(195, 224, 249, 0.85);
+    text-decoration: none;
+    font-size: 2rem;
+}
+
+.link-btn:hover {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+input {
+    border: 0;
+    width: 300px;
+    height: 38px;
+    padding-left: 15px;
+    border-radius: 15px 0 0 15px;
+    outline: none;
+    font-size: 18px;
+    color: #1fc2c2;
+    font-weight: 700;
+}
+
+.name-input {
+    border-radius: 15px;
+    margin-bottom: 40px;
+}
+
+.input-btn {
+    border: 0;
+    width: 100px;
+    height: 40px;
+    color: #fff;
+    border-radius: 0 15px 15px 0;
+    background-color: rgb(76, 129, 227);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.input-btn:hover {
+    background-color: rgb(47, 156, 211);
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    width: 400px;
+}
+
+li {
+    font-size: 20px;
+    word-wrap: break-word;
+}
+
+li button {
+    border: 0;
+    width: 50px;
+    height: 30px;
+    color: #fff;
+    border-radius: 10px;
+    background-color: rgb(76, 129, 227);
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px;
+}
