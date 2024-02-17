@@ -8,7 +8,6 @@ It is a Full-Stack E-commerce Travel Website.This website is designed to help yo
 * **RWD:** Mobile-friendly design for booking travel experiences on-the-go.
 
 ## Getting Started
-[Visit Taipei Day Trip](http://3.115.37.200:3000/)
 
 ### Home Page
 
